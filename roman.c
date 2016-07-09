@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-
 #include "roman.h"
 
 #define MAX_BUFF 64
@@ -15,15 +14,26 @@
 // D 500
 // M 1000
 
+static const char *singles_to_nume(int curr);
+static const char *tens_to_nume(int curr);
+static const char *hundreds_to_nume(int curr);
+static const char *thousands_to_nume(int curr);
+static int nume_to_int(char *nume);
+static const char *int_to_nume(int num);
+
+/**
+ * Convert an integer under 10 to it's roman numeral representation.
+ *
+ * NOTE: There's an obvious pattern in the next four functions.
+ * Refactor into a single function?  Doing it the dumb way for the
+ * time being.
+ */
 static const char *singles_to_nume(int curr)
 {
-	//char res[MAX_BUFF];
 	char *res = malloc(sizeof(char) * MAX_BUFF);
 	char *ptr = res;
 	int count = 0;
     int extra = 0;
-
-    //printf("--- %s Enter\n", __func__);
 
 	snprintf(res, MAX_BUFF, "%d", curr);
 
@@ -73,6 +83,10 @@ static const char *singles_to_nume(int curr)
 	return(ptr);
 }
 
+/**
+ * Convert integer with a multiple of 10 and under 100
+ * to roman numeral string.
+ */
 static const char *tens_to_nume(int curr)
 {
 	char *res = malloc(sizeof(char) * MAX_BUFF);
@@ -80,7 +94,7 @@ static const char *tens_to_nume(int curr)
 	int count = 0;
     int extra = 0;
 
-    //printf("--- %s Enter\n", __func__);
+    //printf("--- %s Enter : %d\n", __func__, curr);
 
 	snprintf(res, MAX_BUFF, "%d", curr);
 
@@ -103,6 +117,7 @@ static const char *tens_to_nume(int curr)
 		        	res[count] = 'X';
                     count++;
 		        }
+			    res[count] = '\0';
                 break;
         }
 	} else if(curr < 50) {
@@ -131,6 +146,10 @@ static const char *tens_to_nume(int curr)
 	return(ptr);
 }
 
+/**
+ * Convert integer with a multiple of 100 and under 1000
+ * to roman numeral string.
+ */
 static const char *hundreds_to_nume(int curr)
 {
 	char *res = malloc(sizeof(char) * MAX_BUFF);
@@ -189,6 +208,9 @@ static const char *hundreds_to_nume(int curr)
 	return(ptr);
 }
 
+/*
+ * Convert integer with multiple of 1000 to roman numeral string.
+ */
 static const char *thousands_to_nume(int curr)
 {
 	char *res = malloc(sizeof(char) * MAX_BUFF);
@@ -210,22 +232,74 @@ static const char *thousands_to_nume(int curr)
 	return(ptr);
 }
 
-void radd(char *first, char *second)
+/**
+ * Helper function to convert a roman numeral string to an integer value.
+ */
+static int nume_to_int(char *nume)
 {
-	printf("%s : %s\n", first, second);
+	int i = 0;
+	int total = 0;
+
+	while(i < strlen(nume)) {
+		switch(nume[i]) {
+			case 'I':
+				if(nume[i + 1] == 'V') {
+					total = total + 4;
+					i++;
+				} else if(nume[i + 1] == 'X') {
+					total = total + 9;
+					i++;
+				} else {
+					total++;
+				}
+				break;
+			case 'V':
+				total = total + 5;
+				break;
+			case 'X':
+				if(nume[i + 1] == 'L') {
+					total = total + 40;
+					i++;
+				} else if(nume[i + 1] == 'C') {
+					total = total + 90;
+					i++;
+				} else {
+					total = total + 10;
+				}
+				break;
+			case 'L':
+				total = total + 50;
+				break;
+			case 'C':
+				if(nume[i + 1] == 'D') {
+					total = total + 400;
+					i++;
+				} else if(nume[i + 1] == 'M') {
+					total = total + 900;
+					i++;
+				} else {
+					total = total + 100;
+				}
+				break;
+			case 'D':
+				total = total + 500;
+				break;
+			case 'M':
+				total = total + 1000;
+				break;
+            default:
+                return(-1);
+                break;
+		}
+		i++;
+	}
+	return(total);
 }
 
-void rsubtract(void)
-{
-	printf("SUBTRACTING....\n");
-}
-
-int nume_to_int(char *nume)
-{
-	return(5);
-}
-
-const char *int_to_nume(int num)
+/**
+ * Helper function to convert an integer to a roman numeral string.
+ */
+static const char *int_to_nume(int num)
 {
 	char *str_num = malloc(sizeof(char) * MAX_BUFF);
 	char *r = NULL;
@@ -269,3 +343,52 @@ const char *int_to_nume(int num)
     return(r);
 }
 
+/**
+ * Add two roman numeral strings together.
+ *
+ * Returns: Pointer to string with resultant roman numeral.
+ */
+const char *radd(char *first, char *second)
+{
+	int one, two, total;
+
+	one = nume_to_int(first);
+	two = nume_to_int(second);
+	total = one + two;
+
+	/* Roman numerals cannot represent zero or negative values! */
+    if(one == -1 || two == -1) {
+        return("Error: Non-roman numerals present"); 
+	} else if(total == 0) {
+        return("Error: No Zeros");
+    }
+
+	return(int_to_nume(total));
+}
+
+/**
+ * Subtract a roman numeral string from another roman numeral string.
+ * 
+ * Usage: Subtract second from first.
+ * 
+ * Returns: Pointer to string with resultant roman numeral.
+ */
+const char *rsubtract(char *first, char *second)
+{
+	int one, two, total;
+
+	one = nume_to_int(first);
+	two = nume_to_int(second);
+	total = one - two;
+
+	/* Roman numerals cannot represent zero or negative values! */
+    if(one == -1 || two == -1) {
+        return("Error: Non-roman numerals present"); 
+	} else if(two > one) {
+		return("Error: No Negatives");
+	} else if(total == 0) {
+        return("Error: No Zeros");
+    }
+
+	return(int_to_nume(total));
+}
