@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 	//radd("II", "III");
 	//radd("IV", "V");
 
-	for(int i = 0; i < 100; i++) {
+	for(int i = 1000; i < 1100; i++) {
 		here = strdup(int_to_nume(i));
 		printf(">>>>>>>>>> %d : %s\n", i, here);
 		free(here);

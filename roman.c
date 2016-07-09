@@ -7,7 +7,13 @@
 
 #define MAX_BUFF 64
 
-// I V X L C D M
+// I
+// V 5
+// X 10
+// L 50
+// C 100
+// D 500
+// M 1000
 
 static const char *singles_to_nume(int curr)
 {
@@ -125,6 +131,85 @@ static const char *tens_to_nume(int curr)
 	return(ptr);
 }
 
+static const char *hundreds_to_nume(int curr)
+{
+	char *res = malloc(sizeof(char) * MAX_BUFF);
+	char *ptr = res;
+	int count = 0;
+    int extra = 0;
+
+    int mid = 500;
+    int scale = 100;
+
+	snprintf(res, MAX_BUFF, "%d", curr);
+
+	if(curr == mid) {
+		res[0] = 'D';
+		res[1] = '\0';
+	} else if(curr > mid) {
+        switch(curr) {
+            case 900:
+			    res[0] = 'C';
+			    res[1] = 'M';
+			    res[2] = '\0';
+                break;
+            default:
+	            extra = curr - mid;
+                int tot = extra / scale;
+		        count = 1;
+		        res[0] = 'D';
+		        while(count <= tot) {
+		        	res[count] = 'C';
+                    count++;
+		        }
+                break;
+        }
+	} else if(curr < mid) {
+        //int lscale = (4 * scale);
+        switch(curr) {
+            case 400:
+			    res[0] = 'C';
+			    res[1] = 'D';
+			    res[2] = '\0';
+                break;
+            default:
+			    count = 0;
+                int tot = curr / scale;
+			    while(count < tot) {
+			    	res[count] = 'C';
+                    count++;
+			    }
+                res[count] = '\0';
+                break;
+        }
+	} else {
+		res[0] = '\0';
+	}
+
+	return(ptr);
+}
+
+static const char *thousands_to_nume(int curr)
+{
+	char *res = malloc(sizeof(char) * MAX_BUFF);
+	char *ptr = res;
+	int count = 0;
+
+    int scale = 1000;
+
+	snprintf(res, MAX_BUFF, "%d", curr);
+
+    count = 0;
+    int tot = curr / scale;
+    while(count < tot) {
+        res[count] = 'M';
+        count++;
+    }
+    res[count] = '\0';
+
+	return(ptr);
+}
+
 void radd(char *first, char *second)
 {
 	printf("%s : %s\n", first, second);
@@ -142,45 +227,44 @@ int nume_to_int(char *nume)
 
 const char *int_to_nume(int num)
 {
-	char *string_num = malloc(sizeof(char) * MAX_BUFF);
+	char *str_num = malloc(sizeof(char) * MAX_BUFF);
 	char *r = NULL;
     int next = 0;
+    int curr;
 
-    //printf("\n\n");
+	snprintf(str_num, MAX_BUFF, "%d", num);
 
-	snprintf(string_num, MAX_BUFF, "%d", num);
-
-	char *ptr = &string_num[0];
+	char *ptr = &str_num[0];
 	int count = 0;
 	while(*ptr != '\0') {
-		//printf("---> %s : %d\n", ptr, count);
 		ptr++;
 		count++;
 	}
 	if(count > 0) count--;
-	//printf("-------> %d : %s\n", count, string_num);
 
-	int current = ((string_num[0] - '0') * pow(10, count));
-	//printf("Current --> %d : %d\n", current, count);
+	curr = ((str_num[0] - '0') * pow(10, count));
 
-    if(current == 0) {
+    if(curr == 0) {
         return("\0");
-    } else if(current < 10) {
-        r = strdup(singles_to_nume(current));
-        //printf("SINGLES -----> %s SIZE: %lu\n", r, sizeof(r));
-    } else if(current < 100) {
-        r = strdup(tens_to_nume(current));
-        //printf("TENS --------> %s\n", r);
+    } else if(curr < 10) {
+        r = strdup(singles_to_nume(curr));
+    } else if(curr < 100) {
+        r = strdup(tens_to_nume(curr));
+    } else if(curr < 1000) {
+        r = strdup(hundreds_to_nume(curr));
+    } else if(curr >= 1000) {
+        r = strdup(thousands_to_nume(curr));
     }
 
-	next = num - current;
+	next = num - curr;
     const char *n = strdup(int_to_nume(next));
-    realloc(r, (sizeof(r) + sizeof(n) + 1));
+    if(!realloc(r, (sizeof(r) + sizeof(n) + 1))) {
+        exit(-1);
+    }
     strcat(r, n);
 
-    if(string_num != NULL) {
-        free(string_num);
-    }
+    if(n != NULL) free((char *)n);
+    if(str_num != NULL) free(str_num);
 
     return(r);
 }
