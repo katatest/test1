@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
 	int num_failed;
 	Suite *s;
 	SRunner *sr;
+	char *here = NULL;
 
 	s = numerals_suite();
 	sr = srunner_create(s);
@@ -40,12 +41,19 @@ int main(int argc, char *argv[])
 	num_failed = srunner_ntests_failed(sr);
 	srunner_free(sr);
 
-	radd("II", "III");
-	radd("IV", "V");
-	printf("%d\n", nume_to_int("V"));
-	printf("%s\n", int_to_nume(1245));
+	//radd("II", "III");
+	//radd("IV", "V");
 
-	//return 0;
+	for(int i = 0; i < 100; i++) {
+		here = strdup(int_to_nume(i));
+		printf(">>>>>>>>>> %d : %s\n", i, here);
+		free(here);
+	}	
+
+	//here = strdup(int_to_nume(60));
+	//printf(">>>>>>>>>> %d : %s\n", 60, here);
+	//free(here);
+
     return (num_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
