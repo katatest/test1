@@ -1,7 +1,3 @@
-/*
- *
- */
-
 /**
  * Add two roman numeral strings together.
  *

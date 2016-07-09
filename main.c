@@ -8,12 +8,12 @@
  */
 START_TEST(addition)
 {
-	ck_assert_str_eq(radd("I", "II"), "III");
-	ck_assert_str_eq(radd("I", "V"), "VI");
-	ck_assert_str_eq(radd("CLXXIII", "LXIV"), "CCXXXVII");
-	ck_assert_str_eq(radd("CCXXXVII", "MCCXXXVIII"), "MCDLXXV");
-	ck_assert_str_eq(radd("C1X", "XCIX"), "Error: Non-roman numerals present");
-	ck_assert_str_eq(radd("0", "0"), "Error: Non-roman numerals present");
+    ck_assert_str_eq(radd("I", "II"), "III");
+    ck_assert_str_eq(radd("I", "V"), "VI");
+    ck_assert_str_eq(radd("CLXXIII", "LXIV"), "CCXXXVII");
+    ck_assert_str_eq(radd("CCXXXVII", "MCCXXXVIII"), "MCDLXXV");
+    ck_assert_str_eq(radd("C1X", "XCIX"), "Error: Non-roman numerals present");
+    ck_assert_str_eq(radd("0", "0"), "Error: Non-roman numerals present");
 }
 END_TEST
 
@@ -22,14 +22,14 @@ END_TEST
  */
 START_TEST(subtraction)
 {
-	ck_assert_str_eq(rsubtract("X", "V"), "V");
-	ck_assert_str_eq(rsubtract("X", "V"), "V");
-	ck_assert_str_eq(rsubtract("XIII", "VI"), "VII");
-	ck_assert_str_eq(rsubtract("CIX", "XCIX"), "X");
-	ck_assert_str_eq(rsubtract("L", "L"), "Error: No Zeros");
-	ck_assert_str_eq(rsubtract("X", "L"), "Error: No Negatives");
-	ck_assert_str_eq(rsubtract("19", "X"), "Error: Non-roman numerals present");
-	ck_assert_str_eq(rsubtract("Yo Momma", "X"), "Error: Non-roman numerals present");
+    ck_assert_str_eq(rsubtract("X", "V"), "V");
+    ck_assert_str_eq(rsubtract("X", "V"), "V");
+    ck_assert_str_eq(rsubtract("XIII", "VI"), "VII");
+    ck_assert_str_eq(rsubtract("CIX", "XCIX"), "X");
+    ck_assert_str_eq(rsubtract("L", "L"), "Error: No Zeros");
+    ck_assert_str_eq(rsubtract("X", "L"), "Error: No Negatives");
+    ck_assert_str_eq(rsubtract("19", "X"), "Error: Non-roman numerals present");
+    ck_assert_str_eq(rsubtract("Yo Momma", "X"), "Error: Non-roman numerals present");
 }
 END_TEST
 
@@ -53,17 +53,15 @@ Suite *numerals_suite(void)
  */
 int main(int argc, char *argv[])
 {
-	int num_failed;
-	Suite *s;
-	SRunner *sr;
-	char *here = NULL;
+    int num_failed;
+    Suite *s;
+    SRunner *sr;
 
-	s = numerals_suite();
-	sr = srunner_create(s);
-
-	srunner_run_all(sr, CK_NORMAL);
-	num_failed = srunner_ntests_failed(sr);
-	srunner_free(sr);
+    s = numerals_suite();
+    sr = srunner_create(s);
+    srunner_run_all(sr, CK_NORMAL);
+    num_failed = srunner_ntests_failed(sr);
+    srunner_free(sr);
 
     return (num_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
