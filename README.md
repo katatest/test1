@@ -32,6 +32,7 @@ Build for Linux
 (tested on Ubuntu 16.04 and 15.04. Builds both .so file and tester.)
 
 sudo apt-get install check
+
 make
 
 ----------
