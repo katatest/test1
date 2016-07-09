@@ -26,9 +26,10 @@ Also built is a testing program that makes use of libcheck for basic unit
 tests.
 
 --------------------------------------------------
-Build for Linux (tested on Ubuntu 16.04 and 15.04)
-Builds both .so file and tester.
+Build for Linux
 --------------------------------------------------
+
+(tested on Ubuntu 16.04 and 15.04. Builds both .so file and tester.)
 
 sudo apt-get install check
 make
