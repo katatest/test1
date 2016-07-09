@@ -364,7 +364,7 @@ const char *radd(char *first, char *second)
 
     /* Roman numerals cannot represent zero or negative values! */
     if(one == -1 || two == -1) {
-        return("Error: Non-roman numerals present"); 
+        return("Error: Non-roman numerals present");
     } else if(total == 0) {
         return("Error: No Zeros");
     }
@@ -374,9 +374,9 @@ const char *radd(char *first, char *second)
 
 /**
  * Subtract a roman numeral string from another roman numeral string.
- * 
+ *
  * Usage: Subtract second from first.
- * 
+ *
  * Returns: Pointer to string with resultant roman numeral.
  */
 const char *rsubtract(char *first, char *second)
@@ -389,7 +389,7 @@ const char *rsubtract(char *first, char *second)
 
     /* Roman numerals cannot represent zero or negative values! */
     if(one == -1 || two == -1) {
-        return("Error: Non-roman numerals present"); 
+        return("Error: Non-roman numerals present");
     } else if(two > one) {
         return("Error: No Negatives");
     } else if(total == 0) {
