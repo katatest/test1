@@ -22,7 +22,7 @@ END_TEST
  */
 START_TEST(subtraction)
 {
-    ck_assert_str_eq(rsubtract("X", "V"), "V");
+    ck_assert_str_eq(rsubtract("X", "V"), "VI");
     ck_assert_str_eq(rsubtract("X", "V"), "V");
     ck_assert_str_eq(rsubtract("XIII", "VI"), "VII");
     ck_assert_str_eq(rsubtract("CIX", "XCIX"), "X");
@@ -57,11 +57,23 @@ int main(int argc, char *argv[])
     Suite *s;
     SRunner *sr;
 
+	printf("\n--------------------------------\n");
+	printf("Running test suite for libroman.\n");
+	printf("--------------------------------\n\n");
+
     s = numerals_suite();
     sr = srunner_create(s);
     srunner_run_all(sr, CK_NORMAL);
     num_failed = srunner_ntests_failed(sr);
     srunner_free(sr);
+
+	if(num_failed == 0) {
+		printf("\nAll Passed...\n\n");
+	} else {
+		printf("\nErrors...\n\n");
+	}
+
+	printf("\n--------------------------------\n\n");
 
     return (num_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
