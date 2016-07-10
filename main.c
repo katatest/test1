@@ -22,7 +22,6 @@ END_TEST
  */
 START_TEST(subtraction)
 {
-    ck_assert_str_eq(rsubtract("X", "V"), "VI");
     ck_assert_str_eq(rsubtract("X", "V"), "V");
     ck_assert_str_eq(rsubtract("XIII", "VI"), "VII");
     ck_assert_str_eq(rsubtract("CIX", "XCIX"), "X");
