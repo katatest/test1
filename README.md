@@ -1,6 +1,4 @@
 libroman
-Jake Knickerbocker
-July 9, 2006
 
 ----------
 Desription
